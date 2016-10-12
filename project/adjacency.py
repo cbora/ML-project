@@ -2,7 +2,7 @@ import numpy as np
 
 class Adjacency():
 
-    def __init__(self, file_name='../dataset/Adjacency.csv'):
+    def __init__(self, file_name='dataset/Adjacency.csv'):
         self.file_name = file_name
         self.data = None
 

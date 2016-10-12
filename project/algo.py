@@ -6,12 +6,20 @@ from scipy.cluster.hierarchy import fcluster, linkage
 from sklearn import random_projection
 
 def pca_project(A, n_components=1):
+    """
+    PCA 
+
+    returns vector
+    """
     X_proj = PCA(n_components=n_components).fit_transform(A)
     X_proj = X_proj/np.linalg.norm(X_proj)
     return X_proj
 
 
 def cca_project(A, d):
+    """ CCA 
+    returns tuple of Y1 and Y2
+    """
     M = np.dot(A.T, A)
     print M.shape
     w, v = np.linalg.eigh(
@@ -36,6 +44,10 @@ def cca_project(A, d):
     return (Y1, Y2)
 
 def randomprojection_project(XX, n_components=1):
+    """ Random projection. 
+
+    returns a tuple of Clusters and cluster centers
+    """
     Y_proj = random_projection.GaussianRandomProjection(n_components=n_components).fit_transform(XX)
     return Y_proj
 
@@ -46,9 +58,12 @@ def kmeans(X, K=2, centers=None, verbose=0):
         k_means = KMeans(n_clusters=K, verbose=verbose)
     k_means.fit(X)
     y_pred = k_means.predict(X)
-    return (y_pred, k_means.cluster_centers_, k_means.labels_)
+    return (y_pred, k_means.cluster_centers_)
 
 def singlelink(X, K):
+    """ Single link algorithm
+    returns a tuple containing clusters and Z
+    """
     Z = linkage(X)
     clusters = fcluster(Z, K, criterion='maxclust')
     #clusters -=

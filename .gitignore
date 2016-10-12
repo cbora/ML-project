@@ -1,3 +1,9 @@
+# ignore the csv files because they are too large
+*.csv
+
+# img dir until we decide to share it
+img/
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
