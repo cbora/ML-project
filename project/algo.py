@@ -4,6 +4,11 @@ from sklearn.decomposition import PCA
 from sklearn.cluster import KMeans
 from scipy.cluster.hierarchy import fcluster, linkage
 from sklearn import random_projection
+from sklearn.cluster import spectral_clustering
+#import sklearn.mixture
+from sklearn.mixture.gmm import GMM
+from sklearn.manifold import SpectralEmbedding
+from sklearn.decomposition import LatentDirichletAllocation as LDAalgo
 
 def pca_project(A, n_components=1):
     """
@@ -52,7 +57,7 @@ def randomprojection_project(XX, n_components=1):
     return Y_proj
 
 def kmeans(X, K=2, centers=None, verbose=0):
-    if centers:
+    if centers is not None:
         k_means = KMeans(n_clusters=K, verbose=verbose, init=centers, n_init=1)
     else:
         k_means = KMeans(n_clusters=K, verbose=verbose)
@@ -68,3 +73,18 @@ def singlelink(X, K):
     clusters = fcluster(Z, K, criterion='maxclust')
     #clusters -=
     return (clusters, Z)
+
+def spectral(graph, n_clusters=10, solver='arpack'):
+    labels =spectral_clustering(graph, n_clusters=n_clusters, eigen_solver=solver)
+    return labels
+
+def gmm(X, n_components=10, centers=None):
+    g = GMM(n_components=n_components, covariance_type='full', n_iter=10000).fit(X)
+    print g.converged_
+    #, means_init=centers).fit(X
+    labels = g.predict(X)
+    return labels
+
+def embedding(graph, n_components=10):
+    Y = SpectralEmbedding(n_components=n_components).fit_transform(graph)
+    return Y
